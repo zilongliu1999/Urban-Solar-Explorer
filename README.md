@@ -4,7 +4,7 @@ A city-scale building-level solar irradiance solver with interactive 3D visualiz
 
 ![Preview](preview.png)
 
-**[▶ Open Live Demo](https://zilongliu1999/urban-solar-explorer/shanghai_solar_demo.html)** — Lujiazui, Shanghai (1,296 OSM buildings) as example dataset.
+**[▶ Open Live Demo](https://your-username.github.io/urban-solar-explorer/shanghai_solar_demo.html)** — Lujiazui, Shanghai (1,296 OSM buildings) as example dataset.
 
 The solver itself is location-agnostic: any city with OSM building data and a local GHI weather record can be dropped in.
 
@@ -17,6 +17,21 @@ The core question this project answers is: *given a real urban environment with 
 This matters because buildings cast shadows on each other — a low-rise building next to a skyscraper receives very different radiation than the same building in an open field. A physically meaningful answer requires geometry-based occlusion for every surface sample point, at every hour.
 
 The solver handles this end-to-end: reads building geometry from PostGIS, splits measured GHI into direct and diffuse components (ERBS), pre-computes sky view factors, casts occlusion rays at each timestep, and writes per-building hourly power back to the database. The CesiumJS frontend reads these results and maps each building to a color on a blue→yellow→red scale, updating as the timeline advances.
+
+This repository contains the **self-contained demo HTML** with pre-computed results for one day baked in — the full backend solver lives in a private repository.
+
+---
+
+## Running the demo
+
+```bash
+git clone https://github.com/your-username/urban-solar-explorer.git
+cd urban-solar-explorer
+python -m http.server 8000
+# → http://localhost:8000/shanghai_solar_demo.html
+```
+
+Or just open `shanghai_solar_demo.html` directly in a browser (some browsers may restrict local file access; the local server is more reliable).
 
 ---
 
@@ -171,63 +186,16 @@ P_total = P_roof + Σ P_wall_segment
 
 ---
 
-## System architecture
+## Backend architecture (not included in this repository)
 
-The solver is modular: each component can be replaced independently.
+The full solver pipeline uses:
 
-```
-PostgreSQL / PostGIS
-  ├── buildings               (footprints + heights — OSM, CityGML, or custom)
-  ├── weather (hourly)        (GHI required; DNI/DHI optional — auto-split if missing)
-  └── solar_hourly            (output: p_total_w, p_beam_w, p_diffuse_w, p_reflected_w)
-
-FastAPI  (app.py)
-  ├── GET  /api/buildings            → GeoJSON for frontend
-  ├── GET  /api/solar/hourly         → pre-computed results by timestamp
-  ├── POST /api/solar/compute-hour   → on-demand computation for one hour
-  └── POST /api/solar/compute-day    → compute full day for one building
-
-precompute_solar_urban_grid_v4p2_kring.py
-  └── compute_single_db(building_id, date)
-        → full pipeline: ENU → index → SVF → per-hour occlusion → upsert
-```
+- **PostgreSQL + PostGIS** for building footprints and hourly weather records
+- **Pure Python solver** (no NumPy/SciPy, `math` only) implementing the algorithms above
+- **FastAPI** service exposing `/api/buildings`, `/api/solar/hourly`, `/api/solar/compute-hour`, `/api/solar/compute-day`
+- **CesiumJS frontend** for 3D visualization
 
 The demo HTML bakes one day of pre-computed results into a self-contained file so it runs without any backend.
-
----
-
-## Running the standalone demo
-
-```bash
-git clone https://github.com/your-username/urban-solar-explorer.git
-cd urban-solar-explorer
-python -m http.server 8000
-# → http://localhost:8000/shanghai_solar_demo.html
-```
-
-## Running the full backend
-
-```bash
-pip install fastapi uvicorn psycopg2-binary python-dotenv
-cp .env.example .env   # set PG_HOST, PG_PORT, PG_DB, PG_USER, PG_PASSWORD
-uvicorn app:app --reload
-
-# Compute one building for one day:
-python precompute_solar_urban_grid_v4p2_kring.py \
-  --mode single_db --building 60 --date 2025-10-21
-```
-
----
-
-## Adapting to another city
-
-The solver has no hard-coded location. To run on a different city:
-
-1. Load building footprints (with heights) into `public.buildings`. OSM, CityGML, or custom shapefiles all work — schema requires `id`, `geom`, `height_m`.
-2. Load hourly GHI records into a weather table. Column auto-detection accepts `time_iso`, `ts`, or `datetime` as time column, and `ghi`, `solarradiat`, or `solarradiation` as irradiance column.
-3. Call `compute_single_db(building_id, date)` or the FastAPI endpoints.
-
-Everything else — latitude-dependent sun position, ERBS split, SVF, occlusion — is computed from the data.
 
 ---
 
@@ -235,7 +203,7 @@ Everything else — latitude-dependent sun position, ERBS split, SVF, occlusion 
 
 | Layer | Detail |
 |---|---|
-| Solar engine | Pure Python, no NumPy/SciPy — `math` only |
+| Solar engine | Pure Python, `math` only |
 | Spatial backend | PostgreSQL + PostGIS |
 | API | FastAPI |
 | 3D scene | CesiumJS, extruded GeoJSON polygons |
