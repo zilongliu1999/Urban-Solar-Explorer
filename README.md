@@ -4,7 +4,7 @@ A city-scale building-level solar irradiance solver with interactive 3D visualiz
 
 ![Preview](preview.png)
 
-**[▶ Open Live Demo](https://your-username.github.io/urban-solar-explorer/shanghai_solar_demo.html)** — Lujiazui, Shanghai (1,296 OSM buildings) as example dataset.
+**[▶ Open Live Demo](https://zilongliu1999/urban-solar-explorer/shanghai_solar_demo.html)** — Lujiazui, Shanghai (1,296 OSM buildings) as example dataset.
 
 The solver itself is location-agnostic: any city with OSM building data and a local GHI weather record can be dropped in.
 
