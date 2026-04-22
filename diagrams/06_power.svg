@@ -1,0 +1,133 @@
+<svg width="900" height="540" viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg" font-family="'Georgia', serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="sun-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="diff-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="refl-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="540" fill="#f8fafc" rx="12"/>
+  <rect x="1" y="1" width="898" height="538" fill="none" stroke="#e2e8f0" stroke-width="1.5" rx="12"/>
+
+  <text x="450" y="34" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b" letter-spacing="2">SURFACE POWER COMPONENTS</text>
+  <text x="450" y="52" text-anchor="middle" font-size="11" fill="#64748b" font-style="italic">three irradiance contributions assembled per surface · building total is the sum</text>
+  <line x1="100" y1="62" x2="800" y2="62" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Divider -->
+  <line x1="450" y1="76" x2="450" y2="514" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="6 4"/>
+
+  <!-- ══ LEFT: Roof ══ -->
+  <text x="225" y="86" text-anchor="middle" font-size="12" font-weight="bold" fill="#374151">Roof surface</text>
+
+  <!-- Sky -->
+  <path d="M40 180 Q225 80 410 180" fill="rgba(186,230,253,0.2)" stroke="#bfdbfe" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="225" y="108" text-anchor="middle" font-size="9" fill="#64748b" font-style="italic">sky hemisphere</text>
+
+  <!-- Ground -->
+  <rect x="40" y="358" width="370" height="12" rx="3" fill="#d1fae5" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="225" y="388" text-anchor="middle" font-size="9" fill="#065f46">ground  (albedo ρ = 0.2)</text>
+
+  <!-- Target building -->
+  <rect x="160" y="240" width="130" height="118" rx="3" fill="#64748b"/>
+  <rect x="160" y="232" width="130" height="10" rx="2" fill="#94a3b8"/>
+
+  <!-- Sun -->
+  <circle cx="380" cy="110" r="18" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="380" y="115" text-anchor="middle" font-size="13">☀</text>
+
+  <!-- Beam -->
+  <line x1="366" y1="122" x2="244" y2="232" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#sun-arr)"/>
+  <text x="338" y="174" text-anchor="middle" font-size="9" fill="#b45309" font-weight="bold" transform="rotate(-45 338 174)">DNI · cos α · f_sun</text>
+
+  <!-- Diffuse -->
+  <line x1="120" y1="138" x2="195" y2="232" stroke="#60a5fa" stroke-width="1.8" stroke-dasharray="5 3" marker-end="url(#diff-arr)"/>
+  <line x1="180" y1="118" x2="220" y2="232" stroke="#60a5fa" stroke-width="1.8" stroke-dasharray="5 3" marker-end="url(#diff-arr)"/>
+  <line x1="290" y1="128" x2="255" y2="232" stroke="#60a5fa" stroke-width="1.8" stroke-dasharray="5 3" marker-end="url(#diff-arr)"/>
+  <text x="86" y="186" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">DHI · F_sky</text>
+
+  <!-- Reflected ≈ 0 for roof -->
+  <text x="330" y="344" text-anchor="middle" font-size="9" fill="#6b7280" font-style="italic">(reflected ≈ 0)</text>
+
+  <!-- Normal -->
+  <line x1="225" y1="232" x2="225" y2="180" stroke="#374151" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="240" y="212" font-size="10" fill="#374151" font-weight="bold" font-style="italic">n̂</text>
+
+  <!-- Incidence -->
+  <path d="M225 232 Q248 218 258 230" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="262" y="222" font-size="9" fill="#b45309" font-style="italic">α</text>
+
+  <!-- Formula box roof -->
+  <rect x="44" y="400" width="362" height="98" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="225" y="420" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e293b">Roof power per timestep</text>
+  <line x1="64" y1="428" x2="386" y2="428" stroke="#e2e8f0" stroke-width="1"/>
+
+  <text x="225" y="446" text-anchor="middle" font-size="10" fill="#b45309">P_beam  =  DNI · cos α · f_sun · A_roof</text>
+  <text x="225" y="462" text-anchor="middle" font-size="10" fill="#2563eb">P_diff  =  DHI · F_sky_roof · A_roof</text>
+  <text x="225" y="478" text-anchor="middle" font-size="10" fill="#059669">P_refl  ≈  0   (F_gnd_roof ≈ 0)</text>
+  <text x="225" y="494" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e293b">P_roof  =  P_beam + P_diff</text>
+
+  <!-- ══ RIGHT: Wall ══ -->
+  <text x="675" y="86" text-anchor="middle" font-size="12" font-weight="bold" fill="#374151">Wall surface  (per segment)</text>
+
+  <!-- Sky -->
+  <path d="M460 180 Q675 80 890 180" fill="rgba(186,230,253,0.15)" stroke="#bfdbfe" stroke-width="1" stroke-dasharray="4 3"/>
+
+  <!-- Ground -->
+  <rect x="460" y="358" width="420" height="12" rx="3" fill="#d1fae5" stroke="#6ee7b7" stroke-width="1"/>
+
+  <!-- Building -->
+  <rect x="600" y="220" width="130" height="138" rx="3" fill="#64748b"/>
+  <rect x="600" y="212" width="130" height="10" rx="2" fill="#94a3b8"/>
+  <!-- Highlighted wall -->
+  <rect x="596" y="222" width="7" height="136" rx="2" fill="#fb923c"/>
+
+  <!-- Sun -->
+  <circle cx="850" cy="120" r="18" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="850" y="125" text-anchor="middle" font-size="13">☀</text>
+
+  <!-- Beam onto wall -->
+  <line x1="836" y1="132" x2="602" y2="252" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#sun-arr)"/>
+  <text x="740" y="186" text-anchor="middle" font-size="9" fill="#b45309" font-weight="bold" transform="rotate(-24 740 186)">DNI · max(0, sun·n̂) · f_sun</text>
+
+  <!-- Diffuse from sky (only outward half-space) -->
+  <line x1="560" y1="150" x2="596" y2="240" stroke="#60a5fa" stroke-width="1.8" stroke-dasharray="5 3" marker-end="url(#diff-arr)"/>
+  <line x1="520" y1="200" x2="593" y2="276" stroke="#60a5fa" stroke-width="1.8" stroke-dasharray="5 3" marker-end="url(#diff-arr)"/>
+  <text x="498" y="232" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">DHI · F_sky_wall</text>
+
+  <!-- Reflected from ground onto wall -->
+  <line x1="530" y1="356" x2="594" y2="314" stroke="#34d399" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#refl-arr)"/>
+  <text x="496" y="346" text-anchor="end" font-size="9" fill="#059669" font-weight="bold">GHI · ρ · F_gnd</text>
+
+  <!-- Wall normal -->
+  <line x1="596" y1="290" x2="546" y2="290" stroke="#ea580c" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="540" y="285" text-anchor="end" font-size="10" fill="#c2410c" font-weight="bold" font-style="italic">n̂</text>
+  <text x="540" y="297" text-anchor="end" font-size="8" fill="#ea580c">outward</text>
+
+  <!-- Incidence on wall -->
+  <path d="M596 290 Q586 274 598 268" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="606" y="278" font-size="9" fill="#b45309" font-style="italic">θ_w</text>
+
+  <!-- Formula box wall -->
+  <rect x="466" y="400" width="400" height="108" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="666" y="420" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e293b">Wall power per segment per timestep</text>
+  <line x1="486" y1="428" x2="846" y2="428" stroke="#e2e8f0" stroke-width="1"/>
+
+  <text x="666" y="446" text-anchor="middle" font-size="10" fill="#b45309">P_beam  =  DNI · max(0, sun·n̂) · f_sun · A_wall</text>
+  <text x="666" y="462" text-anchor="middle" font-size="10" fill="#2563eb">P_diff  =  DHI · F_sky_wall · A_wall</text>
+  <text x="666" y="478" text-anchor="middle" font-size="10" fill="#059669">P_refl  =  GHI · ρ · (1 − F_sky_wall) · A_wall</text>
+  <text x="666" y="493" text-anchor="middle" font-size="9" fill="#64748b" font-style="italic">A_wall = wall_length × building_height</text>
+
+  <!-- Final summation bar -->
+  <rect x="40" y="518" width="820" height="14" rx="4" fill="#1e293b"/>
+  <text x="450" y="528" text-anchor="middle" font-size="9" fill="#f1f5f9" font-weight="bold">
+    P_total_building = P_roof + Σ P_wall_segment   ·   written to solar_hourly as p_total_w / p_beam_w / p_diffuse_w / p_reflected_w
+  </text>
+</svg>

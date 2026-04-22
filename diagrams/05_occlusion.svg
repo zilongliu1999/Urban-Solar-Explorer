@@ -1,0 +1,143 @@
+<svg width="900" height="560" viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" font-family="'Georgia', serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="pass-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="560" fill="#f8fafc" rx="12"/>
+  <rect x="1" y="1" width="898" height="558" fill="none" stroke="#e2e8f0" stroke-width="1.5" rx="12"/>
+
+  <text x="450" y="34" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b" letter-spacing="2">PER-HOUR OCCLUSION TEST</text>
+  <text x="450" y="52" text-anchor="middle" font-size="11" fill="#64748b" font-style="italic">recomputed every hour as the sun moves · gives f_sun — the beam coefficient</text>
+  <line x1="100" y1="62" x2="800" y2="62" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- ══ LEFT: the scene test ══ -->
+  <text x="225" y="84" text-anchor="middle" font-size="12" font-weight="bold" fill="#374151">Test scene  (afternoon, α ≈ 36°)</text>
+
+  <!-- Ground -->
+  <rect x="40" y="390" width="390" height="10" rx="2" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1"/>
+
+  <!-- Sun -->
+  <circle cx="400" cy="110" r="20" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/>
+  <text x="400" y="115" text-anchor="middle" font-size="15">☀</text>
+  <text x="400" y="92" text-anchor="middle" font-size="9" fill="#92400e" font-weight="bold">sun (t = 14:00)</text>
+
+  <!-- Blocker building -->
+  <rect x="252" y="180" width="74" height="210" rx="3" fill="#475569"/>
+  <rect x="252" y="178" width="74" height="7" rx="1.5" fill="#64748b"/>
+  <text x="289" y="285" text-anchor="middle" font-size="9" fill="white">neighbor</text>
+  <text x="289" y="298" text-anchor="middle" font-size="9" fill="white">building</text>
+
+  <!-- Target building with roof grid (5 points visible) -->
+  <rect x="80" y="300" width="150" height="90" rx="3" fill="#64748b"/>
+  <rect x="80" y="296" width="150" height="8" rx="2" fill="#94a3b8"/>
+  <text x="155" y="350" text-anchor="middle" font-size="10" fill="white">target building</text>
+
+  <!-- Sample points & rays -->
+  <!-- Point 1: unblocked -->
+  <circle cx="98" cy="296" r="5" fill="#22c55e" stroke="white" stroke-width="1.5"/>
+  <line x1="98" y1="290" x2="386" y2="120" stroke="#22c55e" stroke-width="1.8" stroke-dasharray="6 3" marker-end="url(#pass-arr)"/>
+  <!-- Point 2: unblocked -->
+  <circle cx="126" cy="296" r="5" fill="#22c55e" stroke="white" stroke-width="1.5"/>
+  <line x1="126" y1="290" x2="388" y2="120" stroke="#22c55e" stroke-width="1.8" stroke-dasharray="6 3" marker-end="url(#pass-arr)"/>
+  <!-- Point 3: blocked -->
+  <circle cx="156" cy="296" r="5" fill="#ef4444" stroke="white" stroke-width="1.5"/>
+  <line x1="156" y1="290" x2="253" y2="240" stroke="#ef4444" stroke-width="2" stroke-dasharray="5 3"/>
+  <circle cx="253" cy="240" r="6" fill="#ef4444"/>
+  <text x="253" y="237" text-anchor="middle" font-size="12" fill="white" font-weight="bold">✕</text>
+  <!-- Point 4: blocked -->
+  <circle cx="186" cy="296" r="5" fill="#ef4444" stroke="white" stroke-width="1.5"/>
+  <line x1="186" y1="290" x2="253" y2="258" stroke="#ef4444" stroke-width="2" stroke-dasharray="5 3"/>
+  <circle cx="253" cy="258" r="6" fill="#ef4444"/>
+  <text x="253" y="255" text-anchor="middle" font-size="12" fill="white" font-weight="bold">✕</text>
+  <!-- Point 5: blocked -->
+  <circle cx="216" cy="296" r="5" fill="#ef4444" stroke="white" stroke-width="1.5"/>
+  <line x1="216" y1="290" x2="253" y2="273" stroke="#ef4444" stroke-width="2" stroke-dasharray="5 3"/>
+  <circle cx="253" cy="273" r="6" fill="#ef4444"/>
+  <text x="253" y="270" text-anchor="middle" font-size="12" fill="white" font-weight="bold">✕</text>
+
+  <!-- Shadow zone -->
+  <rect x="146" y="296" width="88" height="94" rx="2" fill="rgba(71,85,105,0.12)" stroke="#475569" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="190" y="348" text-anchor="middle" font-size="9" fill="#475569" font-style="italic">shadow</text>
+
+  <!-- Solar altitude arc -->
+  <path d="M340 390 A80 80 0 0 1 396 318" fill="none" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="3 2"/>
+  <text x="312" y="368" font-size="9" fill="#b45309" font-style="italic">α = 36°</text>
+
+  <!-- Result -->
+  <rect x="44" y="418" width="378" height="52" rx="7" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="233" y="436" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e293b">f_sun = unblocked / total = 2 / 5 = 0.40</text>
+  <text x="233" y="454" text-anchor="middle" font-size="9" fill="#dc2626">at t+1h, sun moves → recompute f_sun</text>
+  <text x="233" y="465" text-anchor="middle" font-size="9" fill="#1d4ed8">P_beam = DNI · cos α · 0.40 · A</text>
+
+  <!-- Divider -->
+  <line x1="450" y1="76" x2="450" y2="534" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="6 4"/>
+
+  <!-- ══ RIGHT: ray-prism intersection mechanism ══ -->
+  <text x="675" y="84" text-anchor="middle" font-size="12" font-weight="bold" fill="#374151">How ray–prism intersection is tested</text>
+
+  <!-- 3D prism illustration -->
+  <g transform="translate(470, 110)">
+    <!-- Bottom face (ground-aligned rectangle) -->
+    <polygon points="58,170 208,170 250,128 100,128" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.2"/>
+    <!-- Sides -->
+    <polygon points="58,170 58,60 100,18 100,128" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1.2"/>
+    <polygon points="208,170 250,128 250,18 208,60" fill="#b0bec5" stroke="#94a3b8" stroke-width="1.2"/>
+    <!-- Front face -->
+    <polygon points="58,60 208,60 208,170 58,170" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1.2" opacity="0.8"/>
+    <!-- Top face -->
+    <polygon points="58,60 208,60 250,18 100,18" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5"/>
+
+    <!-- z_0, z_1 labels -->
+    <line x1="42" y1="170" x2="54" y2="170" stroke="#94a3b8" stroke-dasharray="2 2"/>
+    <text x="40" y="174" text-anchor="end" font-size="10" fill="#64748b" font-style="italic">z₀</text>
+    <line x1="42" y1="60" x2="54" y2="60" stroke="#94a3b8" stroke-dasharray="2 2"/>
+    <text x="40" y="64" text-anchor="end" font-size="10" fill="#64748b" font-style="italic">z₁</text>
+
+    <!-- Sample point -->
+    <circle cx="-10" cy="200" r="5" fill="#f59e0b" stroke="white" stroke-width="1.5"/>
+    <text x="-10" y="220" text-anchor="middle" font-size="9" fill="#b45309">sample pt</text>
+
+    <!-- Ray through prism -->
+    <line x1="-10" y1="200" x2="310" y2="-6" stroke="#f59e0b" stroke-width="2"/>
+
+    <!-- Entry and exit points on z-planes -->
+    <!-- Ray parametrization: t0 where ray crosses z=z0 (bottom), t1 where it crosses z=z1 (top) -->
+    <!-- Approximate entry/exit points on the top/bottom planes -->
+    <circle cx="80" cy="144" r="4" fill="#7c3aed"/>
+    <text x="80" y="162" text-anchor="middle" font-size="9" fill="#6d28d9">t₀ (enters)</text>
+    <circle cx="238" cy="42" r="4" fill="#7c3aed"/>
+    <text x="238" y="32" text-anchor="middle" font-size="9" fill="#6d28d9">t₁ (exits)</text>
+
+    <!-- t_mid point -->
+    <circle cx="159" cy="93" r="5" fill="#ef4444" stroke="white" stroke-width="1.5"/>
+    <text x="159" y="82" text-anchor="middle" font-size="9" fill="#dc2626" font-weight="bold">t_mid</text>
+    <line x1="159" y1="93" x2="159" y2="123" stroke="#dc2626" stroke-width="1" stroke-dasharray="2 2"/>
+
+    <!-- Footprint projection annotation -->
+    <text x="159" y="200" text-anchor="middle" font-size="9" fill="#dc2626">XY projection</text>
+    <text x="159" y="212" text-anchor="middle" font-size="9" fill="#64748b" font-style="italic">point in polygon?</text>
+  </g>
+
+  <!-- Algorithm steps (right side, below diagram) -->
+  <rect x="470" y="340" width="400" height="156" rx="7" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="670" y="358" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e293b">ray_hits_prism_poly( origin, dir, outer, holes, z₀, z₁ )</text>
+  <line x1="486" y1="366" x2="854" y2="366" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="486" y="386" font-size="10" fill="#7c3aed" font-weight="bold">① Solve for z-slab crossing times:</text>
+  <text x="504" y="402" font-family="monospace" font-size="9.5" fill="#1e293b">t₀ = (z₀ − oz) / dz     t₁ = (z₁ − oz) / dz</text>
+  <text x="486" y="422" font-size="10" fill="#7c3aed" font-weight="bold">② Evaluate ray at midpoint of slab:</text>
+  <text x="504" y="438" font-family="monospace" font-size="9.5" fill="#1e293b">t_mid = 0.5 · (t₀ + t₁)</text>
+  <text x="504" y="452" font-family="monospace" font-size="9.5" fill="#1e293b">x = ox + dx · t_mid ;   y = oy + dy · t_mid</text>
+  <text x="486" y="472" font-size="10" fill="#7c3aed" font-weight="bold">③ Point-in-polygon test  (with holes):</text>
+  <text x="504" y="488" font-family="monospace" font-size="9.5" fill="#1e293b">return point_in_polygon_holes((x,y), outer, holes)</text>
+
+  <!-- Bottom bar -->
+  <rect x="40" y="510" width="820" height="28" rx="6" fill="#1e293b"/>
+  <text x="450" y="529" text-anchor="middle" font-size="10" fill="#f1f5f9" font-weight="bold">
+    Correct for flat-topped prismatic buildings · 3 arithmetic ops + 1 polygon test per candidate
+  </text>
+</svg>

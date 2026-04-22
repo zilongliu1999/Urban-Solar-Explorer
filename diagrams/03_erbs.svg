@@ -1,0 +1,138 @@
+<svg width="900" height="500" viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="'Georgia', serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arr-sun" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arr-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" fill="#f8fafc" rx="12"/>
+  <rect x="1" y="1" width="898" height="498" fill="none" stroke="#e2e8f0" stroke-width="1.5" rx="12"/>
+
+  <text x="450" y="34" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b" letter-spacing="2">ERBS IRRADIANCE DECOMPOSITION</text>
+  <text x="450" y="52" text-anchor="middle" font-size="11" fill="#64748b" font-style="italic">weather station gives only GHI · we need DNI + DHI for surface calculations</text>
+  <line x1="120" y1="62" x2="780" y2="62" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- ══ LEFT: radiation components ══ -->
+  <text x="225" y="84" text-anchor="middle" font-size="12" font-weight="bold" fill="#374151">Three components on a horizontal surface</text>
+
+  <!-- Sky -->
+  <path d="M50 340 Q225 140 400 340" fill="rgba(186,230,253,0.18)" stroke="#93c5fd" stroke-width="1.5"/>
+
+  <!-- Ground -->
+  <rect x="50" y="340" width="350" height="12" rx="3" fill="#d1fae5" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="225" y="368" text-anchor="middle" font-size="10" fill="#065f46">horizontal ground</text>
+
+  <!-- Sun -->
+  <circle cx="360" cy="130" r="18" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="360" y="135" text-anchor="middle" font-size="13">☀</text>
+
+  <!-- Target surface point -->
+  <circle cx="225" cy="340" r="6" fill="#f59e0b" stroke="white" stroke-width="2"/>
+
+  <!-- DNI direct beam -->
+  <line x1="346" y1="143" x2="232" y2="336" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arr-sun)"/>
+  <text x="308" y="225" text-anchor="middle" font-size="10" font-weight="bold" fill="#b45309" transform="rotate(-58 308 225)">DNI  (direct)</text>
+
+  <!-- Diffuse rays -->
+  <line x1="110" y1="170" x2="215" y2="332" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-blue)"/>
+  <line x1="175" y1="135" x2="222" y2="332" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-blue)"/>
+  <line x1="280" y1="145" x2="233" y2="333" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-blue)"/>
+  <text x="94" y="222" text-anchor="middle" font-size="10" fill="#2563eb" font-weight="bold">DHI  (diffuse)</text>
+
+  <!-- Solar altitude angle -->
+  <path d="M225 340 A90 90 0 0 1 295 278" fill="none" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="3 2"/>
+  <text x="306" y="314" font-size="10" fill="#b45309" font-style="italic">α</text>
+
+  <!-- GHI relation -->
+  <rect x="50" y="400" width="350" height="74" rx="7" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="225" y="420" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e293b">What the station measures</text>
+  <text x="225" y="440" text-anchor="middle" font-size="11" fill="#1e293b">GHI = DHI + DNI · sin α</text>
+  <text x="225" y="458" text-anchor="middle" font-size="9" fill="#64748b" font-style="italic">Global Horizontal = diffuse + (direct projected onto horizontal)</text>
+  <text x="225" y="470" text-anchor="middle" font-size="9" fill="#64748b">↓  we need to invert this relation</text>
+
+  <!-- Divider -->
+  <line x1="440" y1="76" x2="440" y2="486" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="6 4"/>
+
+  <!-- ══ RIGHT: Kt curve ══ -->
+  <text x="675" y="84" text-anchor="middle" font-size="12" font-weight="bold" fill="#374151">ERBS model — diffuse fraction vs clearness index</text>
+
+  <!-- Axes -->
+  <line x1="500" y1="400" x2="870" y2="400" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="500" y1="400" x2="500" y2="110" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Axis labels -->
+  <text x="685" y="428" text-anchor="middle" font-size="10" fill="#475569" font-style="italic">Kt  =  GHI / (E₀ · sin α)</text>
+  <text x="480" y="256" text-anchor="middle" font-size="10" fill="#475569" font-style="italic" transform="rotate(-90 480 256)">Fd  (diffuse fraction)</text>
+
+  <!-- X ticks -->
+  <text x="500" y="414" text-anchor="middle" font-size="9" fill="#64748b">0</text>
+  <line x1="593" y1="400" x2="593" y2="406" stroke="#94a3b8"/>
+  <text x="593" y="414" text-anchor="middle" font-size="9" fill="#64748b">0.22</text>
+  <line x1="769" y1="400" x2="769" y2="406" stroke="#94a3b8"/>
+  <text x="769" y="414" text-anchor="middle" font-size="9" fill="#64748b">0.80</text>
+  <line x1="855" y1="400" x2="855" y2="406" stroke="#94a3b8"/>
+  <text x="855" y="414" text-anchor="middle" font-size="9" fill="#64748b">1.0</text>
+
+  <!-- Y ticks -->
+  <line x1="494" y1="132" x2="500" y2="132" stroke="#94a3b8"/>
+  <text x="490" y="136" text-anchor="end" font-size="9" fill="#64748b">1.0</text>
+  <line x1="494" y1="266" x2="500" y2="266" stroke="#94a3b8"/>
+  <text x="490" y="270" text-anchor="end" font-size="9" fill="#64748b">0.5</text>
+  <line x1="494" y1="360" x2="500" y2="360" stroke="#94a3b8"/>
+  <text x="490" y="364" text-anchor="end" font-size="9" fill="#64748b">0.165</text>
+
+  <!-- Grid lines -->
+  <line x1="500" y1="132" x2="860" y2="132" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="593" y1="110" x2="593" y2="400" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="769" y1="110" x2="769" y2="400" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="3 3"/>
+
+  <!-- Shaded area under curve -->
+  <path d="M500 400 L500 132 L593 143 C620 165 645 205 670 232 S720 295 769 360 L860 360 L860 400 Z"
+        fill="rgba(59,130,246,0.07)" stroke="none"/>
+
+  <!-- Curve segments -->
+  <!-- Segment 1: 0 to 0.22, Fd = 1 - 0.09Kt -->
+  <path d="M500 132 L593 143" stroke="#3b82f6" stroke-width="2.5" fill="none"/>
+
+  <!-- Segment 2: 0.22 to 0.80, polynomial -->
+  <!-- x = 500 + Kt * 335 / 1.0; Fd → y: 132 + (1-Fd)*228 -->
+  <!-- Kt=0.22: Fd=0.98, x=593, y=137 -->
+  <!-- Kt=0.35: Fd=0.87, x=637, y=161 -->
+  <!-- Kt=0.50: Fd=0.66, x=690, y=209 -->
+  <!-- Kt=0.65: Fd=0.41, x=742, y=266 -->
+  <!-- Kt=0.80: Fd=0.165, x=793, y=323 -->
+  <!-- But actually Fd = 0.165 at Kt=0.80 corresponds to y = 132 + (1 - 0.165)*228 ≈ 132 + 190 = 322, let's use simpler mapping -->
+  <path d="M593 143 C625 168 655 210 685 240 S745 295 769 360"
+        stroke="#3b82f6" stroke-width="2.5" fill="none"/>
+
+  <!-- Segment 3: Kt > 0.80, flat Fd = 0.165 -->
+  <path d="M769 360 L860 360" stroke="#3b82f6" stroke-width="2.5" fill="none"/>
+
+  <!-- Breakpoint dots -->
+  <circle cx="593" cy="143" r="4" fill="#3b82f6"/>
+  <circle cx="769" cy="360" r="4" fill="#3b82f6"/>
+
+  <!-- Segment labels -->
+  <rect x="506" y="155" width="82" height="28" rx="4" fill="white" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="547" y="169" text-anchor="middle" font-size="9" fill="#1d4ed8">1 − 0.09·Kt</text>
+  <text x="547" y="180" text-anchor="middle" font-size="8" fill="#64748b">overcast</text>
+
+  <rect x="610" y="205" width="88" height="28" rx="4" fill="white" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="654" y="219" text-anchor="middle" font-size="9" fill="#1d4ed8">polynomial</text>
+  <text x="654" y="230" text-anchor="middle" font-size="8" fill="#64748b">partly cloudy</text>
+
+  <rect x="790" y="336" width="60" height="28" rx="4" fill="white" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="820" y="350" text-anchor="middle" font-size="9" fill="#1d4ed8">Fd = 0.165</text>
+  <text x="820" y="361" text-anchor="middle" font-size="8" fill="#64748b">clear sky</text>
+
+  <!-- Output formula -->
+  <rect x="466" y="432" width="400" height="50" rx="7" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="666" y="452" text-anchor="middle" font-size="10" font-weight="bold" fill="#86efac">DHI = Fd · GHI</text>
+  <text x="666" y="470" text-anchor="middle" font-size="10" font-weight="bold" fill="#fcd34d">DNI = (GHI − DHI) / sin α</text>
+</svg>

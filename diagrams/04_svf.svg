@@ -1,0 +1,134 @@
+<svg width="900" height="540" viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg" font-family="'Georgia', serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="sky-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="540" fill="#f8fafc" rx="12"/>
+  <rect x="1" y="1" width="898" height="538" fill="none" stroke="#e2e8f0" stroke-width="1.5" rx="12"/>
+
+  <text x="450" y="34" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b" letter-spacing="2">SKY VIEW FACTOR  (static pre-computation)</text>
+  <text x="450" y="52" text-anchor="middle" font-size="11" fill="#64748b" font-style="italic">computed once per scene · gives the fraction of sky hemisphere each surface sees</text>
+  <line x1="100" y1="62" x2="800" y2="62" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Divider -->
+  <line x1="450" y1="76" x2="450" y2="510" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="6 4"/>
+
+  <!-- ══ LEFT: roof SVF ══ -->
+  <text x="225" y="86" text-anchor="middle" font-size="12" font-weight="bold" fill="#374151">Roof SVF  (full hemisphere)</text>
+
+  <!-- Sky dome -->
+  <path d="M40 360 Q225 140 410 360" fill="rgba(186,230,253,0.18)" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="225" y="168" text-anchor="middle" font-size="9" fill="#64748b" font-style="italic">sky hemisphere</text>
+
+  <!-- Ground -->
+  <rect x="40" y="360" width="370" height="10" rx="2" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1"/>
+
+  <!-- Target building -->
+  <rect x="170" y="260" width="112" height="100" rx="3" fill="#64748b"/>
+  <rect x="170" y="256" width="112" height="8" rx="2" fill="#94a3b8"/>
+  <circle cx="226" cy="256" r="6" fill="#f59e0b" stroke="white" stroke-width="2"/>
+  <text x="226" y="302" text-anchor="middle" font-size="9" fill="white">target</text>
+
+  <!-- Blocking neighbor L -->
+  <rect x="62" y="272" width="68" height="88" rx="3" fill="#475569" opacity="0.85"/>
+  <!-- Blocking neighbor R -->
+  <rect x="314" y="254" width="70" height="106" rx="3" fill="#475569" opacity="0.85"/>
+
+  <!-- Sample rays: 5 visible (blue), 3 blocked (red) -->
+  <!-- Far upper-left: free -->
+  <line x1="226" y1="250" x2="70" y2="170" stroke="#60a5fa" stroke-width="1.7" stroke-dasharray="5 3" marker-end="url(#sky-arr)"/>
+  <!-- Upper-left: free -->
+  <line x1="226" y1="250" x2="148" y2="150" stroke="#60a5fa" stroke-width="1.7" stroke-dasharray="5 3" marker-end="url(#sky-arr)"/>
+  <!-- Low-left: BLOCKED -->
+  <line x1="226" y1="250" x2="100" y2="230" stroke="#ef4444" stroke-width="1.7" stroke-dasharray="4 3"/>
+  <circle cx="100" cy="230" r="5" fill="#ef4444" opacity="0.85"/>
+  <!-- Straight up: free -->
+  <line x1="226" y1="250" x2="226" y2="150" stroke="#60a5fa" stroke-width="1.7" stroke-dasharray="5 3" marker-end="url(#sky-arr)"/>
+  <!-- Upper-right: free -->
+  <line x1="226" y1="250" x2="306" y2="152" stroke="#60a5fa" stroke-width="1.7" stroke-dasharray="5 3" marker-end="url(#sky-arr)"/>
+  <!-- Low-right: BLOCKED -->
+  <line x1="226" y1="250" x2="316" y2="236" stroke="#ef4444" stroke-width="1.7" stroke-dasharray="4 3"/>
+  <circle cx="316" cy="236" r="5" fill="#ef4444" opacity="0.85"/>
+  <!-- Lower-right: BLOCKED -->
+  <line x1="226" y1="250" x2="340" y2="254" stroke="#ef4444" stroke-width="1.7" stroke-dasharray="4 3"/>
+  <circle cx="336" cy="254" r="5" fill="#ef4444" opacity="0.85"/>
+  <!-- Far upper-right: free -->
+  <line x1="226" y1="250" x2="378" y2="178" stroke="#60a5fa" stroke-width="1.7" stroke-dasharray="5 3" marker-end="url(#sky-arr)"/>
+
+  <text x="225" y="390" text-anchor="middle" font-size="9" fill="#64748b">simplified: 5 of 8 shown · actual: 64 directions (16 az × 4 el)</text>
+
+  <!-- Result box -->
+  <rect x="44" y="408" width="362" height="58" rx="7" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="225" y="426" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e293b">F_sky_roof = unblocked / total = 5 / 8 = 0.625</text>
+  <text x="225" y="444" text-anchor="middle" font-size="9" fill="#475569">→ roof sees 62.5% of sky hemisphere</text>
+  <text x="225" y="458" text-anchor="middle" font-size="9" fill="#1d4ed8">P_diffuse_roof = DHI · 0.625 · A_roof</text>
+
+  <!-- ══ RIGHT: wall SVF ══ -->
+  <text x="675" y="86" text-anchor="middle" font-size="12" font-weight="bold" fill="#374151">Wall SVF  (outward half-space only)</text>
+
+  <!-- Sky dome -->
+  <path d="M490 360 Q675 140 860 360" fill="rgba(186,230,253,0.12)" stroke="#bfdbfe" stroke-width="1" stroke-dasharray="5 3"/>
+
+  <!-- Ground -->
+  <rect x="490" y="360" width="370" height="10" rx="2" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1"/>
+
+  <!-- Target building with highlighted wall -->
+  <rect x="640" y="240" width="120" height="120" rx="3" fill="#64748b"/>
+  <rect x="640" y="237" width="120" height="8" rx="2" fill="#94a3b8"/>
+  <!-- Highlight left wall -->
+  <rect x="636" y="240" width="6" height="120" rx="2" fill="#fb923c"/>
+  <circle cx="639" cy="295" r="5" fill="#f59e0b" stroke="white" stroke-width="2"/>
+
+  <!-- Wall normal -->
+  <line x1="636" y1="295" x2="580" y2="295" stroke="#ea580c" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="574" y="290" text-anchor="end" font-size="10" fill="#c2410c" font-weight="bold" font-style="italic">n̂</text>
+  <text x="574" y="302" text-anchor="end" font-size="8" fill="#ea580c">outward</text>
+
+  <!-- Half-space boundary -->
+  <line x1="636" y1="160" x2="636" y2="360" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4 2"/>
+  <text x="636" y="156" text-anchor="middle" font-size="8" fill="#7c3aed">hemisphere boundary</text>
+
+  <!-- Blocking neighbor on left -->
+  <rect x="502" y="280" width="72" height="80" rx="3" fill="#475569" opacity="0.85"/>
+
+  <!-- Dim out rays in back half (x > 636) — show only showing forward half -->
+  <!-- Front rays from wall midpoint: d·n > 0 means dx < 0 (since n points to -x) -->
+
+  <!-- Forward-upper: free -->
+  <line x1="634" y1="293" x2="540" y2="180" stroke="#60a5fa" stroke-width="1.7" stroke-dasharray="5 3" marker-end="url(#sky-arr)"/>
+  <!-- Forward-straight: free -->
+  <line x1="634" y1="293" x2="510" y2="230" stroke="#60a5fa" stroke-width="1.7" stroke-dasharray="5 3" marker-end="url(#sky-arr)"/>
+  <!-- Forward-low: BLOCKED by neighbor -->
+  <line x1="634" y1="293" x2="568" y2="280" stroke="#ef4444" stroke-width="1.7" stroke-dasharray="4 3"/>
+  <circle cx="568" cy="280" r="5" fill="#ef4444" opacity="0.85"/>
+  <!-- Forward-mid-low: BLOCKED -->
+  <line x1="634" y1="293" x2="572" y2="310" stroke="#ef4444" stroke-width="1.7" stroke-dasharray="4 3"/>
+  <circle cx="572" cy="310" r="5" fill="#ef4444" opacity="0.85"/>
+  <!-- Forward upper high: free -->
+  <line x1="634" y1="293" x2="610" y2="170" stroke="#60a5fa" stroke-width="1.7" stroke-dasharray="5 3" marker-end="url(#sky-arr)"/>
+
+  <!-- Excluded directions (behind wall) -->
+  <line x1="634" y1="293" x2="700" y2="180" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 4" opacity="0.4"/>
+  <line x1="634" y1="293" x2="750" y2="230" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 4" opacity="0.4"/>
+  <text x="745" y="205" text-anchor="middle" font-size="9" fill="#94a3b8" font-style="italic">excluded</text>
+  <text x="745" y="218" text-anchor="middle" font-size="8" fill="#94a3b8">(d · n ≤ 0)</text>
+
+  <text x="675" y="390" text-anchor="middle" font-size="9" fill="#64748b">only directions where d · n̂ &gt; 0 are counted</text>
+
+  <!-- Result box -->
+  <rect x="472" y="408" width="396" height="58" rx="7" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="670" y="426" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e293b">F_sky_wall = 3 / 5 = 0.60   ·   F_gnd_wall = 1 − F_sky = 0.40</text>
+  <text x="670" y="444" text-anchor="middle" font-size="9" fill="#1d4ed8">P_diff_wall = DHI · F_sky · A_wall</text>
+  <text x="670" y="458" text-anchor="middle" font-size="9" fill="#059669">P_refl_wall = GHI · ρ · F_gnd · A_wall</text>
+
+  <!-- Bottom bar -->
+  <rect x="40" y="486" width="820" height="28" rx="6" fill="#1e293b"/>
+  <text x="450" y="505" text-anchor="middle" font-size="10" fill="#f1f5f9" font-weight="bold">
+    SVF is pre-computed from geometry alone — reused for every hour of simulation
+  </text>
+</svg>

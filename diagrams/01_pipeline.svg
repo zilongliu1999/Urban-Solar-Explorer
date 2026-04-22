@@ -1,0 +1,124 @@
+<svg width="900" height="700" viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg" font-family="'Georgia', serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arr-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="700" fill="#f8fafc" rx="12"/>
+  <rect x="1" y="1" width="898" height="698" fill="none" stroke="#e2e8f0" stroke-width="1.5" rx="12"/>
+
+  <text x="450" y="36" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b" letter-spacing="2">COMPUTATION PIPELINE</text>
+  <line x1="160" y1="44" x2="740" y2="44" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Stage 1: Data input -->
+  <text x="50" y="76" font-size="10" font-weight="bold" fill="#94a3b8" letter-spacing="1.5">STAGE 1 · DATA INPUT</text>
+  <rect x="50" y="84" width="380" height="62" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="240" y="104" text-anchor="middle" font-size="11" font-weight="bold" fill="#1d4ed8">PostGIS  ·  public.buildings</text>
+  <text x="240" y="121" text-anchor="middle" font-size="10" fill="#3b82f6">id, geom, height_m, osm_id_text</text>
+  <text x="240" y="137" text-anchor="middle" font-size="10" fill="#64748b">1,296 footprints with heights</text>
+
+  <rect x="470" y="84" width="380" height="62" rx="8" fill="#fff7ed" stroke="#fcd34d" stroke-width="1.5"/>
+  <text x="660" y="104" text-anchor="middle" font-size="11" font-weight="bold" fill="#b45309">PG weather  ·  city_weather_raw_min</text>
+  <text x="660" y="121" text-anchor="middle" font-size="10" fill="#d97706">datetime, solarradiat (GHI, W/m²)</text>
+  <text x="660" y="137" text-anchor="middle" font-size="10" fill="#64748b">hourly records, real station</text>
+
+  <!-- Arrows down -->
+  <line x1="240" y1="146" x2="240" y2="180" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="660" y1="146" x2="660" y2="180" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arr-amber)"/>
+
+  <!-- Stage 2: Geometric prep -->
+  <text x="50" y="186" font-size="10" font-weight="bold" fill="#94a3b8" letter-spacing="1.5">STAGE 2 · PREPARATION</text>
+
+  <rect x="50" y="194" width="180" height="62" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+  <text x="140" y="214" text-anchor="middle" font-size="11" font-weight="bold" fill="#166534">ENU Transform</text>
+  <text x="140" y="231" text-anchor="middle" font-size="10" fill="#16a34a">lon/lat → (x, y) metric</text>
+  <text x="140" y="247" text-anchor="middle" font-size="10" fill="#64748b">ll2enu( ), CCW, wall normals</text>
+
+  <rect x="250" y="194" width="180" height="62" rx="8" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
+  <text x="340" y="214" text-anchor="middle" font-size="11" font-weight="bold" fill="#6d28d9">Spatial Index</text>
+  <text x="340" y="231" text-anchor="middle" font-size="10" fill="#7c3aed">30 m grid · k-ring lookup</text>
+  <text x="340" y="247" text-anchor="middle" font-size="10" fill="#64748b">280 m neighbor radius</text>
+
+  <rect x="470" y="194" width="380" height="62" rx="8" fill="#fff7ed" stroke="#fcd34d" stroke-width="1.5"/>
+  <text x="660" y="214" text-anchor="middle" font-size="11" font-weight="bold" fill="#b45309">ERBS Decomposition</text>
+  <text x="660" y="231" text-anchor="middle" font-size="10" fill="#d97706">GHI  →  DNI + DHI  (clearness index Kt)</text>
+  <text x="660" y="247" text-anchor="middle" font-size="10" fill="#64748b">erbs_split( ) · per hour</text>
+
+  <!-- connectors -->
+  <line x1="230" y1="225" x2="250" y2="225" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="340" y1="256" x2="340" y2="290" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Stage 3: Static precompute -->
+  <text x="50" y="300" font-size="10" font-weight="bold" fill="#94a3b8" letter-spacing="1.5">STAGE 3 · STATIC PRE-COMPUTE  (once per scene)</text>
+
+  <rect x="50" y="308" width="380" height="78" rx="8" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.5"/>
+  <text x="240" y="328" text-anchor="middle" font-size="11" font-weight="bold" fill="#065f46">Sky View Factor  ·  SVF</text>
+  <text x="240" y="346" text-anchor="middle" font-size="10" fill="#059669">stratified_sky_dirs(16 az × 4 el = 64 rays)</text>
+  <text x="240" y="361" text-anchor="middle" font-size="10" fill="#059669">for each building: cast rays, count unblocked</text>
+  <text x="240" y="377" text-anchor="middle" font-size="10" fill="#64748b">output:  F_sky_roof, F_sky_wall  (per wall segment)</text>
+
+  <rect x="470" y="308" width="380" height="78" rx="8" fill="#fef3c7" stroke="#fde68a" stroke-width="1.5"/>
+  <text x="660" y="328" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400e">Surface Sample Grids</text>
+  <text x="660" y="346" text-anchor="middle" font-size="10" fill="#b45309">Roof:  0.5 m × 0.5 m lattice, max 2,000 pts</text>
+  <text x="660" y="361" text-anchor="middle" font-size="10" fill="#b45309">Wall:  0.5 m along edge × 2 m vertical</text>
+  <text x="660" y="377" text-anchor="middle" font-size="10" fill="#64748b">output:  roof_grid_xy, wall.grid_xyz</text>
+
+  <line x1="240" y1="386" x2="240" y2="420" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="660" y1="386" x2="660" y2="420" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Stage 4: Per-hour loop -->
+  <text x="50" y="430" font-size="10" font-weight="bold" fill="#94a3b8" letter-spacing="1.5">STAGE 4 · PER-HOUR LOOP  (for each timestep t)</text>
+
+  <rect x="50" y="438" width="800" height="128" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+
+  <!-- Sub-boxes inside the per-hour loop -->
+  <text x="450" y="462" text-anchor="middle" font-size="11" font-weight="bold" fill="#991b1b">Per-hour computation  (compute_single_db loop body)</text>
+
+  <!-- Step 1: solar position -->
+  <rect x="72" y="476" width="180" height="76" rx="6" fill="white" stroke="#fca5a5" stroke-width="1"/>
+  <text x="162" y="494" text-anchor="middle" font-size="10" font-weight="bold" fill="#b45309">① Solar position</text>
+  <text x="162" y="510" text-anchor="middle" font-size="9" fill="#dc2626">solar_alt_az(lat, lon, t)</text>
+  <text x="162" y="524" text-anchor="middle" font-size="9" fill="#64748b">→ altitude α, azimuth</text>
+  <text x="162" y="538" text-anchor="middle" font-size="9" fill="#64748b">→ sun_dir (x,y,z)</text>
+
+  <!-- Step 2: occlusion test -->
+  <rect x="264" y="476" width="192" height="76" rx="6" fill="white" stroke="#fca5a5" stroke-width="1"/>
+  <text x="360" y="494" text-anchor="middle" font-size="10" font-weight="bold" fill="#991b1b">② Per-point occlusion</text>
+  <text x="360" y="510" text-anchor="middle" font-size="9" fill="#dc2626">for each sample pt:</text>
+  <text x="360" y="524" text-anchor="middle" font-size="9" fill="#64748b">ray_hits_prism_poly(...)</text>
+  <text x="360" y="538" text-anchor="middle" font-size="9" fill="#64748b">→ f_sun = unblocked / total</text>
+
+  <!-- Step 3: power -->
+  <rect x="468" y="476" width="180" height="76" rx="6" fill="white" stroke="#fca5a5" stroke-width="1"/>
+  <text x="558" y="494" text-anchor="middle" font-size="10" font-weight="bold" fill="#374151">③ Surface power</text>
+  <text x="558" y="508" text-anchor="middle" font-size="9" fill="#1d4ed8">P_beam = DNI·cos θ·f_sun·A</text>
+  <text x="558" y="522" text-anchor="middle" font-size="9" fill="#059669">P_diff = DHI·F_sky·A</text>
+  <text x="558" y="536" text-anchor="middle" font-size="9" fill="#b45309">P_refl = GHI·ρ·F_gnd·A</text>
+  <text x="558" y="548" text-anchor="middle" font-size="9" fill="#64748b" font-style="italic">roof + each wall segment</text>
+
+  <!-- Step 4: store -->
+  <rect x="660" y="476" width="168" height="76" rx="6" fill="white" stroke="#fca5a5" stroke-width="1"/>
+  <text x="744" y="494" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d28d9">④ Upsert</text>
+  <text x="744" y="510" text-anchor="middle" font-size="9" fill="#7c3aed">upsert_solar(...)</text>
+  <text x="744" y="524" text-anchor="middle" font-size="9" fill="#64748b">→ solar_hourly table</text>
+  <text x="744" y="538" text-anchor="middle" font-size="9" fill="#64748b">(id, ts, p_total, p_beam, ...)</text>
+
+  <!-- arrows between per-hour steps -->
+  <line x1="252" y1="514" x2="264" y2="514" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="456" y1="514" x2="468" y2="514" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="648" y1="514" x2="660" y2="514" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- arrow leaving per-hour loop -->
+  <line x1="450" y1="566" x2="450" y2="594" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Stage 5: output -->
+  <text x="50" y="604" font-size="10" font-weight="bold" fill="#94a3b8" letter-spacing="1.5">STAGE 5 · DELIVERY</text>
+  <rect x="50" y="612" width="800" height="68" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="450" y="636" text-anchor="middle" font-size="11" font-weight="bold" fill="#f8fafc">Pre-computed JSON  embedded in  shanghai_solar_demo.html</text>
+  <text x="450" y="654" text-anchor="middle" font-size="10" fill="#94a3b8">CesiumJS frontend: building extrusion + color = f(P_total) · timeline animation · infobox on click</text>
+  <text x="450" y="670" text-anchor="middle" font-size="10" fill="#64748b">or via FastAPI /api/solar/hourly endpoint (backend deployment)</text>
+</svg>

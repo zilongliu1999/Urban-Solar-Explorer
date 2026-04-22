@@ -1,0 +1,205 @@
+<svg width="900" height="540" viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg" font-family="'Georgia', serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="540" fill="#f8fafc" rx="12"/>
+  <rect x="1" y="1" width="898" height="538" fill="none" stroke="#e2e8f0" stroke-width="1.5" rx="12"/>
+
+  <text x="450" y="36" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b" letter-spacing="2">30 M GRID SPATIAL INDEX</text>
+  <text x="450" y="54" text-anchor="middle" font-size="11" fill="#64748b" font-style="italic">avoids O(n²) ray tests — reduces neighbor candidates from 1,296 to ~5–20</text>
+  <line x1="160" y1="64" x2="740" y2="64" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Vertical divider -->
+  <line x1="450" y1="76" x2="450" y2="510" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="6 4"/>
+
+  <!-- ══ LEFT: grid layout with buildings ══ -->
+  <text x="225" y="86" text-anchor="middle" font-size="12" font-weight="bold" fill="#374151">Scene indexed into 30 m cells</text>
+
+  <!-- Grid (7 cols × 7 rows = 49 cells) -->
+  <g transform="translate(54, 104)">
+    <!-- cells -->
+    <g stroke="#cbd5e1" stroke-width="0.8" fill="#ffffff">
+      <!-- row 0 -->
+      <rect x="0" y="0" width="48" height="48"/>
+      <rect x="48" y="0" width="48" height="48"/>
+      <rect x="96" y="0" width="48" height="48"/>
+      <rect x="144" y="0" width="48" height="48"/>
+      <rect x="192" y="0" width="48" height="48"/>
+      <rect x="240" y="0" width="48" height="48"/>
+      <rect x="288" y="0" width="48" height="48"/>
+      <!-- rows 1-6 -->
+      <rect x="0" y="48" width="48" height="48"/>
+      <rect x="48" y="48" width="48" height="48"/>
+      <rect x="96" y="48" width="48" height="48"/>
+      <rect x="144" y="48" width="48" height="48"/>
+      <rect x="192" y="48" width="48" height="48"/>
+      <rect x="240" y="48" width="48" height="48"/>
+      <rect x="288" y="48" width="48" height="48"/>
+
+      <rect x="0" y="96" width="48" height="48"/>
+      <rect x="48" y="96" width="48" height="48"/>
+      <rect x="96" y="96" width="48" height="48"/>
+      <rect x="144" y="96" width="48" height="48"/>
+      <rect x="192" y="96" width="48" height="48"/>
+      <rect x="240" y="96" width="48" height="48"/>
+      <rect x="288" y="96" width="48" height="48"/>
+
+      <rect x="0" y="144" width="48" height="48"/>
+      <rect x="48" y="144" width="48" height="48"/>
+      <rect x="96" y="144" width="48" height="48"/>
+      <rect x="144" y="144" width="48" height="48"/>
+      <rect x="192" y="144" width="48" height="48"/>
+      <rect x="240" y="144" width="48" height="48"/>
+      <rect x="288" y="144" width="48" height="48"/>
+
+      <rect x="0" y="192" width="48" height="48"/>
+      <rect x="48" y="192" width="48" height="48"/>
+      <rect x="96" y="192" width="48" height="48"/>
+      <rect x="144" y="192" width="48" height="48"/>
+      <rect x="192" y="192" width="48" height="48"/>
+      <rect x="240" y="192" width="48" height="48"/>
+      <rect x="288" y="192" width="48" height="48"/>
+
+      <rect x="0" y="240" width="48" height="48"/>
+      <rect x="48" y="240" width="48" height="48"/>
+      <rect x="96" y="240" width="48" height="48"/>
+      <rect x="144" y="240" width="48" height="48"/>
+      <rect x="192" y="240" width="48" height="48"/>
+      <rect x="240" y="240" width="48" height="48"/>
+      <rect x="288" y="240" width="48" height="48"/>
+
+      <rect x="0" y="288" width="48" height="48"/>
+      <rect x="48" y="288" width="48" height="48"/>
+      <rect x="96" y="288" width="48" height="48"/>
+      <rect x="144" y="288" width="48" height="48"/>
+      <rect x="192" y="288" width="48" height="48"/>
+      <rect x="240" y="288" width="48" height="48"/>
+      <rect x="288" y="288" width="48" height="48"/>
+    </g>
+
+    <!-- k-ring highlight (3x3 around center cell at col=3, row=3) -->
+    <rect x="96" y="96" width="144" height="144" fill="rgba(124,58,237,0.10)" stroke="#7c3aed" stroke-width="2" stroke-dasharray="4 3"/>
+
+    <!-- scattered building footprints (small polygons in various cells) -->
+    <g fill="#94a3b8" stroke="#475569" stroke-width="0.6" opacity="0.8">
+      <rect x="8" y="8" width="16" height="14" rx="1"/>
+      <rect x="56" y="12" width="22" height="18" rx="1"/>
+      <rect x="108" y="20" width="14" height="12" rx="1"/>
+      <rect x="208" y="10" width="18" height="16" rx="1"/>
+      <rect x="258" y="20" width="20" height="14" rx="1"/>
+      <rect x="305" y="12" width="16" height="20" rx="1"/>
+
+      <rect x="18" y="58" width="14" height="18" rx="1"/>
+      <rect x="70" y="68" width="18" height="16" rx="1"/>
+      <rect x="122" y="54" width="16" height="20" rx="1"/>
+      <rect x="170" y="68" width="14" height="18" rx="1"/>
+      <rect x="215" y="76" width="20" height="14" rx="1"/>
+      <rect x="260" y="58" width="18" height="18" rx="1"/>
+
+      <!-- cells inside k-ring: these will be highlighted more -->
+      <rect x="110" y="110" width="22" height="18" rx="1" fill="#60a5fa" stroke="#2563eb" stroke-width="0.8"/>
+      <rect x="156" y="106" width="18" height="20" rx="1" fill="#60a5fa" stroke="#2563eb" stroke-width="0.8"/>
+      <rect x="202" y="112" width="22" height="22" rx="1" fill="#60a5fa" stroke="#2563eb" stroke-width="0.8"/>
+
+      <rect x="108" y="160" width="20" height="18" rx="1" fill="#60a5fa" stroke="#2563eb" stroke-width="0.8"/>
+      <rect x="202" y="158" width="24" height="22" rx="1" fill="#60a5fa" stroke="#2563eb" stroke-width="0.8"/>
+
+      <rect x="108" y="208" width="22" height="18" rx="1" fill="#60a5fa" stroke="#2563eb" stroke-width="0.8"/>
+      <rect x="155" y="208" width="18" height="20" rx="1" fill="#60a5fa" stroke="#2563eb" stroke-width="0.8"/>
+      <rect x="204" y="204" width="20" height="22" rx="1" fill="#60a5fa" stroke="#2563eb" stroke-width="0.8"/>
+
+      <!-- target at center -->
+      <rect x="158" y="160" width="16" height="18" rx="1" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"/>
+
+      <!-- far-away buildings (NOT in k-ring, grey) -->
+      <rect x="16" y="110" width="18" height="16" rx="1"/>
+      <rect x="68" y="120" width="16" height="14" rx="1"/>
+      <rect x="260" y="112" width="18" height="16" rx="1"/>
+      <rect x="310" y="120" width="18" height="18" rx="1"/>
+
+      <rect x="22" y="208" width="16" height="20" rx="1"/>
+      <rect x="62" y="216" width="20" height="14" rx="1"/>
+      <rect x="262" y="210" width="18" height="18" rx="1"/>
+      <rect x="308" y="214" width="16" height="18" rx="1"/>
+
+      <rect x="16" y="258" width="18" height="16" rx="1"/>
+      <rect x="70" y="262" width="16" height="20" rx="1"/>
+      <rect x="120" y="264" width="20" height="18" rx="1"/>
+      <rect x="166" y="272" width="16" height="14" rx="1"/>
+      <rect x="214" y="262" width="18" height="20" rx="1"/>
+      <rect x="264" y="266" width="18" height="18" rx="1"/>
+      <rect x="312" y="262" width="16" height="22" rx="1"/>
+
+      <rect x="18" y="310" width="16" height="18" rx="1"/>
+      <rect x="62" y="308" width="20" height="20" rx="1"/>
+      <rect x="110" y="314" width="18" height="14" rx="1"/>
+      <rect x="210" y="306" width="16" height="22" rx="1"/>
+      <rect x="262" y="314" width="20" height="18" rx="1"/>
+      <rect x="306" y="310" width="18" height="20" rx="1"/>
+    </g>
+
+    <!-- target label -->
+    <line x1="166" y1="158" x2="166" y2="130" stroke="#b45309" stroke-width="1" stroke-dasharray="2 2"/>
+    <text x="166" y="124" text-anchor="middle" font-size="9" fill="#b45309" font-weight="bold">target</text>
+
+    <!-- k-ring label -->
+    <text x="168" y="256" text-anchor="middle" font-size="10" fill="#6d28d9" font-weight="bold">3×3 k-ring</text>
+
+    <!-- scale -->
+    <line x1="0" y1="350" x2="48" y2="350" stroke="#475569" stroke-width="1.5"/>
+    <line x1="0" y1="346" x2="0" y2="354" stroke="#475569" stroke-width="1.5"/>
+    <line x1="48" y1="346" x2="48" y2="354" stroke="#475569" stroke-width="1.5"/>
+    <text x="24" y="366" text-anchor="middle" font-size="9" fill="#475569">30 m</text>
+  </g>
+
+  <!-- Bottom left note -->
+  <rect x="54" y="476" width="342" height="32" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="225" y="494" text-anchor="middle" font-size="9" fill="#475569">
+    <tspan font-weight="bold" fill="#f59e0b">●</tspan> target  ·
+    <tspan font-weight="bold" fill="#2563eb">●</tspan> candidates (in k-ring)  ·
+    <tspan font-weight="bold" fill="#94a3b8">●</tspan> ignored (outside)
+  </text>
+
+  <!-- ══ RIGHT: algorithm explanation ══ -->
+  <text x="675" y="86" text-anchor="middle" font-size="12" font-weight="bold" fill="#374151">How the index works</text>
+
+  <!-- Step 1 -->
+  <rect x="476" y="104" width="380" height="84" rx="7" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
+  <text x="492" y="124" font-size="11" font-weight="bold" fill="#6d28d9">① Build index  (once)</text>
+  <text x="492" y="142" font-size="10" fill="#475569">For each building with centroid (cx, cy):</text>
+  <text x="492" y="159" font-family="monospace" font-size="9.5" fill="#1e293b">  ix = floor( (cx − origin_x) / 30 )</text>
+  <text x="492" y="174" font-family="monospace" font-size="9.5" fill="#1e293b">  iy = floor( (cy − origin_y) / 30 )</text>
+  <text x="492" y="185" font-size="9" fill="#64748b" font-style="italic">→ store in cells[(ix, iy)]</text>
+
+  <!-- Step 2 -->
+  <rect x="476" y="196" width="380" height="96" rx="7" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="492" y="216" font-size="11" font-weight="bold" fill="#1d4ed8">② k-ring query  (per sample point)</text>
+  <text x="492" y="234" font-size="10" fill="#475569">For a query position (x, y):</text>
+  <text x="492" y="251" font-family="monospace" font-size="9.5" fill="#1e293b">  for dx in (−1, 0, 1):</text>
+  <text x="492" y="266" font-family="monospace" font-size="9.5" fill="#1e293b">    for dy in (−1, 0, 1):</text>
+  <text x="492" y="281" font-family="monospace" font-size="9.5" fill="#1e293b">      candidates ∪= cells[(ix+dx, iy+dy)]</text>
+
+  <!-- Step 3 -->
+  <rect x="476" y="300" width="380" height="84" rx="7" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+  <text x="492" y="320" font-size="11" font-weight="bold" fill="#166534">③ Why 30 m × 3 = 90 m cell window</text>
+  <text x="492" y="340" font-size="10" fill="#475569">Matches typical urban shadow length.</text>
+  <text x="492" y="358" font-size="10" fill="#475569">A 60 m building at 45° sun altitude casts</text>
+  <text x="492" y="374" font-size="10" fill="#475569">≈ 60 m shadow — fits inside 3×3 = 90 m.</text>
+
+  <!-- Performance note -->
+  <rect x="476" y="396" width="380" height="92" rx="7" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="666" y="416" text-anchor="middle" font-size="11" font-weight="bold" fill="#fcd34d">Performance impact</text>
+  <text x="666" y="436" text-anchor="middle" font-size="10" fill="#f1f5f9">Without index:  1,296 buildings × ~2,000 sample pts</text>
+  <text x="666" y="452" text-anchor="middle" font-size="10" fill="#f1f5f9">× 12 hours × 64 SVF dirs  ≈  <tspan fill="#fca5a5">2 billion tests</tspan></text>
+  <text x="666" y="472" text-anchor="middle" font-size="10" fill="#f1f5f9">With k-ring:  candidates drop to ~10 per query</text>
+  <text x="666" y="482" text-anchor="middle" font-size="10" fill="#86efac" font-weight="bold">≈ 100× speedup in practice</text>
+
+  <!-- Legend bar bottom -->
+  <rect x="40" y="516" width="820" height="18" rx="5" fill="#1e293b"/>
+  <text x="450" y="529" text-anchor="middle" font-size="9.5" fill="#f1f5f9">
+    Spatial index is the single optimization that makes real-time city-scale ray casting feasible on pure Python.
+  </text>
+</svg>
