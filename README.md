@@ -2,9 +2,7 @@
 
 A city-scale building-level solar irradiance solver with interactive 3D visualization. Computes per-surface beam / diffuse / reflected power under real weather data, accounting for mutual building shading via ray-casting occlusion.
 
-![Preview](preview.png)
-
-**[▶ Open Live Demo](https://your-username.github.io/urban-solar-explorer/shanghai_solar_demo.html)** — Lujiazui, Shanghai (1,296 OSM buildings) as example dataset.
+**[▶ Open Live Demo](https://zilongliu1999.github.io/Urban-Solar-Explorer/shanghai_solar_demo.html)** — Lujiazui, Shanghai (1,296 OSM buildings) as example dataset.
 
 The solver itself is location-agnostic: any city with OSM building data and a local GHI weather record can be dropped in.
 
@@ -18,6 +16,44 @@ This matters because buildings cast shadows on each other — a low-rise buildin
 
 The solver handles this end-to-end: reads building geometry from PostGIS, splits measured GHI into direct and diffuse components (ERBS), pre-computes sky view factors, casts occlusion rays at each timestep, and writes per-building hourly power back to the database. The CesiumJS frontend reads these results and maps each building to a color on a blue→yellow→red scale, updating as the timeline advances.
 
+This repository contains:
+
+- `shanghai_solar_demo.html` — interactive 3D demo with one day of pre-computed Lujiazui results baked in. Open it in a browser, no install needed.
+- `solar_solver.py` — pure-function reference implementation of the full algorithm. No PostgreSQL, no FastAPI, no external dependencies — just the Python standard library. Run `python solar_solver.py demo` to see the solver compute on a small synthetic scene with real Shanghai weather data.
+
+The full production version (PostGIS schema, FastAPI service, on-demand compute endpoints) lives in a private repository. The standalone script here is the algorithm core, extracted so it can be read end-to-end without infrastructure.
+
+---
+
+## Running the demo
+
+```bash
+git clone https://github.com/zilongliu1999/Urban-Solar-Explorer.git
+cd Urban-Solar-Explorer
+python -m http.server 8000
+# → http://localhost:8000/shanghai_solar_demo.html
+```
+
+Or just open `shanghai_solar_demo.html` directly in a browser (some browsers may restrict local file access; the local server is more reliable).
+
+## Running the standalone solver
+
+`solar_solver.py` runs the full algorithm pipeline on a small synthetic scene — one 200 m tower surrounded by four identical low buildings — using real Shanghai weather data for a few hours of Oct 21, 2025:
+
+```bash
+python solar_solver.py demo
+```
+
+**Requires Python 3.7+** (uses `from __future__ import annotations`). Zero external dependencies — only the standard library.
+
+It prints:
+- step-by-step pipeline progress
+- hourly power per building in kW
+- daily energy totals in kWh
+- a brief commentary on what the numbers reveal about mutual shading
+
+To use it on your own data, call `compute_hourly(buildings_geojson, weather_records)`. See the function's docstring for parameter details.
+
 ---
 
 ## Computation pipeline
@@ -25,6 +61,18 @@ The solver handles this end-to-end: reads building geometry from PostGIS, splits
 The solver is structured in five stages: data input → geometric preparation → static pre-compute (SVF + sample grids) → per-hour loop (solar position → occlusion → power) → delivery.
 
 ![Computation Pipeline](diagrams/01_pipeline.svg)
+
+### Key parameters (quick reference)
+
+| Parameter | Default | Meaning |
+|---|---|---|
+| `cell_m` | 30 m | Spatial-index cell size. Effective neighbour radius = `3 × cell_m` (3×3 k-ring). The 30 m default is tuned for **dense urban scenes**; for sparse scenes (isolated buildings >90 m apart) increase this — see solver docstring. |
+| `svf_az` × `svf_el` | 16 × 4 = 64 | Hemisphere sampling resolution for Sky View Factor. Linear cost. |
+| `roof_grid_m` | 0.5 m | Spacing of roof sample points. |
+| `wall_grid_len_m` × `wall_grid_h_m` | 0.5 × 2.0 m | Wall sample spacing (along edge × vertical). |
+| `albedo` (ρ) | 0.20 | Ground reflectivity (configurable per weather record). |
+
+All parameters are exposed through `compute_hourly()` in `solar_solver.py`.
 
 ---
 
@@ -84,7 +132,13 @@ DHI = Fd · GHI
 DNI = (GHI − DHI) / sin(α)
 ```
 
-The diffuse fraction `Fd` transitions from near-1 (overcast — all diffuse) to 0.165 (clear sky — mostly direct). This avoids the physically unrealistic DNI spikes that appear at very low solar angles if GHI is used directly.
+The diffuse fraction `Fd` transitions from near-1 (overcast — all diffuse) to 0.165 (clear sky — mostly direct).
+
+**Two practical safeguards in the implementation:**
+- Below 5° solar altitude, DNI is forced to zero. The `1/sin(α)` term in the DNI formula gives unphysically large values near the horizon, where atmospheric refraction and path-length effects make ERBS unreliable anyway.
+- DNI is clamped at 1200 W/m² as a hard ceiling (about 90% of the solar constant at sea level on a clear day).
+
+These are conservative engineering choices — not part of the original ERBS paper — to keep downstream power calculations sane in edge cases.
 
 ### 5. Sky View Factor — pre-computed once
 
@@ -171,63 +225,16 @@ P_total = P_roof + Σ P_wall_segment
 
 ---
 
-## System architecture
+## Backend architecture (not included in this repository)
 
-The solver is modular: each component can be replaced independently.
+The full solver pipeline uses:
 
-```
-PostgreSQL / PostGIS
-  ├── buildings               (footprints + heights — OSM, CityGML, or custom)
-  ├── weather (hourly)        (GHI required; DNI/DHI optional — auto-split if missing)
-  └── solar_hourly            (output: p_total_w, p_beam_w, p_diffuse_w, p_reflected_w)
-
-FastAPI  (app.py)
-  ├── GET  /api/buildings            → GeoJSON for frontend
-  ├── GET  /api/solar/hourly         → pre-computed results by timestamp
-  ├── POST /api/solar/compute-hour   → on-demand computation for one hour
-  └── POST /api/solar/compute-day    → compute full day for one building
-
-precompute_solar_urban_grid_v4p2_kring.py
-  └── compute_single_db(building_id, date)
-        → full pipeline: ENU → index → SVF → per-hour occlusion → upsert
-```
+- **PostgreSQL + PostGIS** for building footprints and hourly weather records
+- **Pure Python solver** (no NumPy/SciPy, `math` only) implementing the algorithms above
+- **FastAPI** service exposing `/api/buildings`, `/api/solar/hourly`, `/api/solar/compute-hour`, `/api/solar/compute-day`
+- **CesiumJS frontend** for 3D visualization
 
 The demo HTML bakes one day of pre-computed results into a self-contained file so it runs without any backend.
-
----
-
-## Running the standalone demo
-
-```bash
-git clone https://github.com/your-username/urban-solar-explorer.git
-cd urban-solar-explorer
-python -m http.server 8000
-# → http://localhost:8000/shanghai_solar_demo.html
-```
-
-## Running the full backend
-
-```bash
-pip install fastapi uvicorn psycopg2-binary python-dotenv
-cp .env.example .env   # set PG_HOST, PG_PORT, PG_DB, PG_USER, PG_PASSWORD
-uvicorn app:app --reload
-
-# Compute one building for one day:
-python precompute_solar_urban_grid_v4p2_kring.py \
-  --mode single_db --building 60 --date 2025-10-21
-```
-
----
-
-## Adapting to another city
-
-The solver has no hard-coded location. To run on a different city:
-
-1. Load building footprints (with heights) into `public.buildings`. OSM, CityGML, or custom shapefiles all work — schema requires `id`, `geom`, `height_m`.
-2. Load hourly GHI records into a weather table. Column auto-detection accepts `time_iso`, `ts`, or `datetime` as time column, and `ghi`, `solarradiat`, or `solarradiation` as irradiance column.
-3. Call `compute_single_db(building_id, date)` or the FastAPI endpoints.
-
-Everything else — latitude-dependent sun position, ERBS split, SVF, occlusion — is computed from the data.
 
 ---
 
@@ -235,7 +242,7 @@ Everything else — latitude-dependent sun position, ERBS split, SVF, occlusion 
 
 | Layer | Detail |
 |---|---|
-| Solar engine | Pure Python, no NumPy/SciPy — `math` only |
+| Solar engine | Pure Python, `math` only |
 | Spatial backend | PostgreSQL + PostGIS |
 | API | FastAPI |
 | 3D scene | CesiumJS, extruded GeoJSON polygons |
