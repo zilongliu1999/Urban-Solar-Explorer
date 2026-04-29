@@ -1,0 +1,17 @@
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python (in case anyone runs solar_solver.py)
+__pycache__/
+*.pyc
+
+# Logs
+*.log
