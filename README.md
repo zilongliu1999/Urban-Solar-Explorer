@@ -1,5 +1,7 @@
 # Urban Solar Explorer
 
+![Preview](preview.png)
+
 A city-scale building-level solar irradiance solver with interactive 3D visualization. Computes per-surface beam / diffuse / reflected power under real weather data, accounting for mutual building shading via ray-casting occlusion.
 
 **[▶ Open Live Demo](https://zilongliu1999.github.io/Urban-Solar-Explorer/shanghai_solar_demo.html)** — Lujiazui, Shanghai (1,296 OSM buildings) as example dataset.
